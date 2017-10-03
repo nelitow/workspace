@@ -14,13 +14,12 @@ void * philosopher(void * arg) {
 
 	cout << "Philosopher " << n << " was born!\n";
 
+	int second;
 	int first = n;
-	int second = n + 1;
-
-	if (n == 4) {
-		second = n;
-		first = 0;
-	}
+	if (n != 4)
+		second = n + 1;
+	else
+		second = 0;
 
 	for (int i = 0; i < ITERATIONS; i++) {
 		cout << "Philosopher " << n << " thinking ...\n";
@@ -33,9 +32,8 @@ void * philosopher(void * arg) {
 		cout << "Philosopher " << n << " eating ...\n";
 		for (int i = 0; i < DELAY; i++)
 			;
-
-		chopstick[second].v();
 		chopstick[first].v();
+		chopstick[second].v();
 	}
 
 	exit(n);

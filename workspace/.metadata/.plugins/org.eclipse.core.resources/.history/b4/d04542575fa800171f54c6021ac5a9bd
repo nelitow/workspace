@@ -4,8 +4,8 @@
 
 using namespace std;
 
-const int DELAY = 100000;
-const int ITERATIONS = 5000;
+const int DELAY = 10000000;
+const int ITERATIONS = 5;
 
 Semaphore chopstick[5];
 
@@ -15,27 +15,26 @@ void * philosopher(void * arg) {
 	cout << "Philosopher " << n << " was born!\n";
 
 	int first = n;
-	int second = n + 1;
+	if (n != 4)
+		int second = n + 1;
+	else
+		n = 0;
 
-	if (n == 4) {
-		second = n;
-		first = 0;
-	}
-
+	// Foram removidos do laço abaixo:
+	//  - uma chamada para chopstick[first].p()
+	//  - uma chamada para chopstick[second].p()
+	//  - uma chamada para chopstick[first].v()
+	//  - uma chamada para chopstick[second].v()
 	for (int i = 0; i < ITERATIONS; i++) {
 		cout << "Philosopher " << n << " thinking ...\n";
 		for (int i = 0; i < DELAY * 10; i++)
 			;
-
 		chopstick[first].p();
-		chopstick[second].p();
+		chopstick[first].v();
 
 		cout << "Philosopher " << n << " eating ...\n";
 		for (int i = 0; i < DELAY; i++)
 			;
-
-		chopstick[second].v();
-		chopstick[first].v();
 	}
 
 	exit(n);
