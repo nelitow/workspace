@@ -9,8 +9,8 @@ const int N = 1;
 const int p = 2;
 const int c = 2;
 
-Semaphore vazio(N);
-Semaphore cheio(0);
+Semaphore s1(N);
+Semaphore s2(0);
 Mutex mut;
 
 int REP = 5;
@@ -20,11 +20,11 @@ int e = 0;
 
 void * producer(void * arg) {
 	int n = *((int*) arg);
-	int pp;
+	int p;
 	cout << "Producer was born!\n";
+
 	char data = -1;
 	for (int i = 0; i < n; i++) {
-		vazio.p();
 		data = (char) i + 0x61;
 		s1.p();
 		p = pg;

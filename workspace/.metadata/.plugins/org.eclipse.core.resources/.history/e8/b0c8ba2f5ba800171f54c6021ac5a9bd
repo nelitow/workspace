@@ -23,8 +23,9 @@ void * producer(void * arg) {
 	int pp;
 	cout << "Producer was born!\n";
 	char data = -1;
+
 	for (int i = 0; i < n; i++) {
-		vazio.p();
+
 		data = (char) i + 0x61;
 		s1.p();
 		p = pg;
