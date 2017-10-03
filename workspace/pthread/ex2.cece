@@ -1,0 +1,57 @@
+#include <iostream>
+#include "thread.h"
+#include "semaphore.h"
+
+/* number of matrix columns and rows */
+#define M 5000
+#define N 10
+
+using namespace std;
+
+Semaphore s(1);
+int matrix[N][M];
+Thread *threads[N];
+
+void * SumValues(void * arg) {
+	int n = *((int*) arg); /* number of row */
+	int total = 0; /* the total of the values in the row */
+	int j;
+	for (j = 0; j < M; j++) /* sum values in the "n" row */
+		total += matrix[n][j];
+	s.p();
+	cout << "The total in row" << n << " is " << total << "." << endl;
+	s.v();
+	/* terminate a thread and return a total in the row */
+	exit(total);
+}
+
+int main(int argc, char *argv[]) {
+	int i, j;
+	int total = 0; /* the total of the values in the matrix */
+
+	/* initialize the matrix */
+	for (i = 0; i < N; i++)
+		for (j = 0; j < M; j++)
+			matrix[i][j] = i * M + j;
+
+	/* create threads */
+	/* COLOQUE SEU CÓDIGO PARA CRIAR AS THREADS AQUI! */
+	for (int t = 0; t < N; t++)
+		threads[t] = new Thread(SumValues, &t, sizeof(int));
+	int status;
+	for (int t = 0; t < N; t++) {
+		threads[t]->join(&status);
+		s.p();
+		cout << "Thread " << t << " terminou com status " << status << "."
+				<< endl;
+		s.v();
+		total = total+status;
+	}
+
+	/* wait for terminate a threads */
+	/* COLOQUE SEU CÓDIGO PARA PEGAR O SOMATÓRIO DE LINHAS E TOTALIZAR A SOMA DA MATRIZ AQUI! */
+
+	cout << "The total values in the matrix is " << total << endl;
+
+	return 0;
+}
